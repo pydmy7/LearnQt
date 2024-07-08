@@ -1,8 +1,8 @@
-if (DEFINED qt6rootdir)
-    set(Qt6_DIR "${qt6rootdir}/lib/cmake/Qt6")
-    set(Qt6GuiTools_DIR "${qt6rootdir}/lib/cmake/Qt6GuiTools")
+if (DEFINED qt5rootdir)
+    set(Qt5_DIR "${qt5rootdir}/lib/cmake/Qt5")
+    set(Qt5GuiTools_DIR "${qt5rootdir}/lib/cmake/Qt5GuiTools")
 
-    find_package(Qt6 COMPONENTS Core Widgets REQUIRED)
+    find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 else()
-    message("usage: cmake -S . -B build -G Ninja -D qt6rootdir=/usr/bin/xxx")
+    message("usage: cmake -S . -B build -G Ninja -D qt5rootdir=/usr/bin/xxx")
 endif()

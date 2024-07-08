@@ -1,18 +1,24 @@
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QLabel>
+#include <QApplication>
+#include <QFileSystemModel>
+#include <QTreeView>
+#include <QListView>
 
-int main(int argc, char *argv[]) {
+int main(int argc, char** argv) {
     QApplication app(argc, argv);
 
-    QWidget window;
-    window.resize(250, 150);
-    window.setWindowTitle("Qt5 Test");
+    QFileSystemModel model;
+    model.setRootPath(QDir::currentPath());
 
-    QLabel hello("Hello, World!", &window);
-    hello.move(80, 60);
+    QTreeView tree;
+    tree.setModel(&model);
+    tree.setRootIndex(model.index(QDir::currentPath()));
+    tree.show();
 
-    window.show();
+    QListView list;
+    list.setModel(&model);
+    list.setRootIndex(model.index(QDir::currentPath()));
+    list.show();
 
     return app.exec();
 }
+
