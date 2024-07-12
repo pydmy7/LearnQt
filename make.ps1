@@ -13,5 +13,5 @@ cmake -S . -B build -G Ninja -D qt5rootdir=D:/Library/Qt/5.15.2/msvc2019_64
 echo "`nbuild: cmake --build build -j"
 cmake --build build -j
 
-echo "`nrun: ./build/test/test.exe"
-./build/test/test.exe
+echo "`nrun: ./build/mainwindow/mainwindow.exe"
+./build/mainwindow/mainwindow.exe
