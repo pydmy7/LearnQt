@@ -1,8 +1,8 @@
 clear
 echo "clear"
 
-echo "`nRemove-Item -Path ./build -Recurse -Force"
-Remove-Item -Path ./build -Recurse -Force
+# echo "`nRemove-Item -Path ./build -Recurse -Force"
+# Remove-Item -Path ./build -Recurse -Force
 
 # user / system env
 # $env:QT_QPA_PLATFORM_PLUGIN_PATH = "D:\Library\Qt\5.15.2\msvc2019_64\plugins\platforms"

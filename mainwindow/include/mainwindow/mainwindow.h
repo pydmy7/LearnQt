@@ -1,7 +1,10 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
+
+#include <QStringList>
+
+class QStringListModel;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,5 +22,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    QStringList stringlist_;
+    QStringListModel* stringlistmodel_;
+
+    void init();
 };
-#endif // MAINWINDOW_H
