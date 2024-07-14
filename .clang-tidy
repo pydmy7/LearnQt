@@ -139,4 +139,4 @@ Checks: '-*,
 '
 
 WarningsAsErrors: '*'
-HeaderFilterRegex: '.*chessboard/.+\.(hpp|cpp)$'
+HeaderFilterRegex: '.*mainwindow/.+\.(hpp|cpp)$'
