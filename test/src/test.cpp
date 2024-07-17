@@ -6,6 +6,7 @@
 #include <QMimeData>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QDebug>
 
 class CustomStandardItemModel : public QStandardItemModel {
 public:
@@ -18,14 +19,13 @@ public:
 
 protected:
     void startDrag(Qt::DropActions supportedActions) override {
-        this->source_index = currentIndex();
+        this->sourceindex_ = QTreeView::currentIndex();
         QTreeView::startDrag(supportedActions);
     }
 
     void dragMoveEvent(QDragMoveEvent *event) override {
-        QModelIndex target_index = indexAt(event->pos());
-        // here : this->source_index.parent() == target_index.parent()
-        if (this->source_index.isValid() && target_index.isValid() && this->source_index.parent() == target_index.parent()) {
+        QModelIndex targetindex = indexAt(event->pos());
+        if (this->sourceindex_.isValid() && targetindex.isValid() && this->canDragDrop(this->sourceindex_, targetindex)) {
             QTreeView::dragMoveEvent(event);
         } else {
             event->ignore();
@@ -33,9 +33,8 @@ protected:
     }
 
     void dropEvent(QDropEvent *event) override {
-        QModelIndex target_index = indexAt(event->pos());
-        // here : this->source_index.parent() == target_index.parent()
-        if (this->source_index.isValid() && target_index.isValid() && this->source_index.parent() == target_index.parent()) {
+        QModelIndex targetindex = indexAt(event->pos());
+        if (this->sourceindex_.isValid() && targetindex.isValid() && this->canDragDrop(this->sourceindex_, targetindex)) {
             QTreeView::dropEvent(event);
         } else {
             event->ignore();
@@ -45,34 +44,52 @@ protected:
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override {
         QTreeView::selectionChanged(selected, deselected);
 
-        QModelIndexList indexes = this->selectionModel()->selectedIndexes();
+        QModelIndexList indexes = QTreeView::selectionModel()->selectedIndexes();
         if (indexes.isEmpty()) {
             return;
         }
 
-        QModelIndex parent_index = indexes.first().parent();
-        for (const QModelIndex &index : indexes) {
-            if (index.parent() != parent_index) {
-                this->selectionModel()->select(index, QItemSelectionModel::Deselect);
+        for (QModelIndex aimindex = indexes.first(); const QModelIndex &index : indexes) {
+            if (!this->canMultiSelect(aimindex, index)) {
+                QTreeView::selectionModel()->select(index, QItemSelectionModel::Deselect);
             }
         }
     }
 
 private:
-    QModelIndex source_index;
+    QModelIndex sourceindex_;
+
+    QModelIndex getRootModelIndex(const QModelIndex& a) {
+        QModelIndex root {a};
+        while (root.parent().isValid()) {
+            root = root.parent();
+        }
+        return root;
+    }
+
+    bool canDragDrop(const QModelIndex& a, const QModelIndex& b) {
+        return getRootModelIndex(a) == getRootModelIndex(b);
+    }
+    bool canMultiSelect(const QModelIndex& leader, const QModelIndex& other) {
+        return getRootModelIndex(leader) == getRootModelIndex(other);
+    }
 };
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
     CustomStandardItemModel model;
-    QStandardItem* rootitem = model.invisibleRootItem();
+    QStandardItem* rootitem {model.invisibleRootItem()};
     for (int i = 0; i < 5; ++i) {
-        QStandardItem *item = new QStandardItem(QString("tree-%0").arg(i));
-        rootitem->appendRow(item);
+        QStandardItem *item1 {new QStandardItem{QString{"tree-%0"}.arg(i)}};
+        rootitem->appendRow(item1);
         for (int j = 0; j < 3; ++j) {
-            QStandardItem *childItem = new QStandardItem(QString("leaf-%0").arg(j));
-            item->appendRow(childItem);
+            QStandardItem *item2 {new QStandardItem{QString{"node-%0"}.arg(j)}};
+            item1->appendRow(item2);
+            for (int k = 0; k < 3; ++k) {
+                QStandardItem *item3 {new QStandardItem{QString{"leaf-%0"}.arg(k)}};
+                item2->appendRow(item3);
+            }
         }
     }
 
