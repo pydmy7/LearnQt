@@ -28,5 +28,6 @@ private:
     QItemSelectionModel* select_;
 
     void init();
+    void initModelData(const QVector<QString>& list);
 };
 #endif  // MAINWINDOW_H

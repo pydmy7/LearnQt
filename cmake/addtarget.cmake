@@ -35,7 +35,9 @@ function(addExecutable target)
 
     target_include_directories(${target} PRIVATE include)
     target_compile_features(${target} PRIVATE cxx_std_20)
-    set_target_properties(${target} PROPERTIES AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/ui")
+    if (CMAKE_AUTOUIC)
+        set_target_properties(${target} PROPERTIES AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/ui")
+    endif()
 
     useSanitize(${target})
     
@@ -84,7 +86,9 @@ function(addLibrary target)
 
     target_include_directories(${target} PUBLIC include)
     target_compile_features(${target} PRIVATE cxx_std_20)
-    set_target_properties(${target} PROPERTIES AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/ui")
+    if (CMAKE_AUTOUIC)
+        set_target_properties(${target} PROPERTIES AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/ui")
+    endif()
 
     useSanitize(${target})
     
