@@ -136,7 +136,9 @@ Checks: '-*,
     clang-analyzer-unix.cstring.NullArg,
 
     boost-use-to-string,
+
+    cppcoreguidelines-pro-type-member-init,
+    hicpp-member-init,
 '
 
 WarningsAsErrors: '*'
-HeaderFilterRegex: '.*mainwindow/.+\.(hpp|cpp)$'

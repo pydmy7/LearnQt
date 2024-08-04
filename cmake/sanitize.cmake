@@ -5,7 +5,7 @@ function(useSanitize target_name)
     if(${gnubackend} OR ${mingwbackend})
         target_compile_options(${target_name} PRIVATE -Wall -Wextra -Wpedantic)
     elseif(${msvcbackend})
-        target_compile_options(${target_name} PRIVATE /W4)
+        target_compile_options(${target_name} PRIVATE /W4 /analyze)
     endif()
 
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")

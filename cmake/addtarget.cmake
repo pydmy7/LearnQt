@@ -41,7 +41,7 @@ function(addExecutable target)
     
     if (myself)
         # useClangFormat(${target} ${CMAKE_CURRENT_SOURCE_DIR})
-        # useClangTidy(${target})
+        useClangTidy(${target})
     endif()
 endfunction(addExecutable)
 
@@ -90,6 +90,6 @@ function(addLibrary target)
     
     if (myself)
         # useClangFormat(${target} ${CMAKE_CURRENT_SOURCE_DIR})
-        # useClangTidy(${target})
+        useClangTidy(${target})
     endif()
 endfunction(addLibrary)
